@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">Location</string>
+
+    <string name="ok">OK</string>
+    <string name="internet_error_message"><![CDATA[Internet connection not available, Please check your network settings & try again.]]></string>
+    <string name="cancel">Cancel</string>
+
+    <!--    Password-->
+    <string name="txt_pass_1">Password is required.</string>
+    <string name="txt_pass_2">The password must contain</string>
+    <string name="txt_pass_3">an upper case,</string>
+    <string name="txt_pass_4">lowercase,</string>
+    <string name="txt_pass_5">number,</string>
+    <string name="txt_pass_6">special character i.e. !,@,#, etc.</string>
+    <string name="txt_pass_7">For eg. \'Team@251\'</string>
+    <string name="txt_pass_8">Password is too short. Needs to have 8 characters</string>
+    <string name="txt_pass_9">Password doesn\'t support blank space </string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+
+
+    <!--    Login Validation-->
+    <string name="email_require_msg">Email is require!</string>
+    <string name="email_not_valid_format_msg">The email is not in a valid format.</string>
+    <string name="password_require_msg">Password is require!</string>
+    <string name="password_validation_error_msg">Password length must be 8 to 14 character require!</string>
+    <string name="email_and_password_not_valid">Email and Password not Valid</string>
+    <string name="txt_home">Home</string>
+    <string name="txt_map">Map</string>
+    <string name="txt_profile">Profile</string>
 </resources>
