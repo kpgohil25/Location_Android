@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.theta.location.R;
 import com.theta.location.adapters.HomeActionAdapters;
 import com.theta.location.databinding.ActivityHomeBinding;
+import com.theta.location.utils.CustomViewPager;
 import com.theta.location.view.fragments.HomeFragment;
 import com.theta.location.view.fragments.MapFragment;
 import com.theta.location.view.fragments.ProfileFragment;
@@ -39,7 +40,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @BindingAdapter({"bind:handler"})
     public static void bindViewPagerAdapter(final ViewPager viewPager, final HomeActivity activity) {
-        HomeActionAdapters adapter = new HomeActionAdapters(activity.getSupportFragmentManager());
+        HomeActionAdapters adapter = new HomeActionAdapters(activity,activity.getSupportFragmentManager());
         adapter.addFragment(new HomeFragment(), activity.getResources().getString(R.string.txt_home));
         adapter.addFragment(new MapFragment(), activity.getResources().getString(R.string.txt_map));
         adapter.addFragment(new ProfileFragment(), activity.getResources().getString(R.string.txt_profile));
@@ -47,7 +48,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @BindingAdapter({"bind:pager"})
-    public static void bindViewPagerTabs(final TabLayout view, final ViewPager pagerView) {
+    public static void bindViewPagerTabs(final TabLayout view, final CustomViewPager pagerView) {
+        pagerView.setPagingEnabled(false);
         view.setupWithViewPager(pagerView, true);
     }
 

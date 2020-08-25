@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 public class Utils {
 
     public static final String IS_LOGIN = "is_login";
+    public static final String USER_NAME = "user_name";
 
     public static final Pattern hasUppercase = Pattern.compile("[A-Z]");
     public static final Pattern hasLowercase = Pattern.compile("[a-z]");

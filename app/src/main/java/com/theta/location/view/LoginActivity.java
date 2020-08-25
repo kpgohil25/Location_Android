@@ -62,6 +62,8 @@ public class LoginActivity extends AppCompatActivity implements LoginAuthenticat
         LogFile.e("Login Success");
 
         PrefsUtil.with(getActivity()).write(Utils.IS_LOGIN, true);
+        PrefsUtil.with(getActivity()).write(Utils.USER_NAME, "maitrey@thetatechnolabs.com");
+        
         Intent homeIntent = new Intent(getActivity(), HomeActivity.class);
         homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(homeIntent);
