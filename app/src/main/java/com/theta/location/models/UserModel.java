@@ -1,6 +1,7 @@
 package com.theta.location.models;
 
 import com.google.gson.annotations.SerializedName;
+import com.theta.location.viewmodel.UserViewModel;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class UserModel {
     private Integer totalPages;
 
     @SerializedName("data")
-    private List<DataList> data = null;
+    private List<UserViewModel> data = null;
 
     public Integer getPage() {
         return page;
@@ -53,11 +54,11 @@ public class UserModel {
         this.totalPages = totalPages;
     }
 
-    public List<DataList> getData() {
+    public List<UserViewModel> getData() {
         return data;
     }
 
-    public void setData(List<DataList> data) {
+    public void setData(List<UserViewModel> data) {
         this.data = data;
     }
 

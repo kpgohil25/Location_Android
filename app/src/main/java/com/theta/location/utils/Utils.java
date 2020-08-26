@@ -3,14 +3,18 @@ package com.theta.location.utils;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import androidx.core.app.ActivityCompat;
+
 import com.theta.location.R;
 
+import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,13 +27,18 @@ import java.util.regex.Pattern;
  */
 public class Utils {
 
+    //Preference Data Store Key
     public static final String IS_LOGIN = "is_login";
     public static final String USER_NAME = "user_name";
 
+    //Validation Pattern
     public static final Pattern hasUppercase = Pattern.compile("[A-Z]");
     public static final Pattern hasLowercase = Pattern.compile("[a-z]");
     public static final Pattern hasNumber = Pattern.compile("\\d");
     public static final Pattern hasSpecialChar = Pattern.compile("[^a-zA-Z0-9 ]");
+
+    //Alert Dialg
+    private static Dialog dialog;
 
     /**
      * Gets the version code of the application. For e.g. 1.0
@@ -236,4 +245,59 @@ public class Utils {
     }
 
 
+    /**
+     * Open Progress Dialog
+     *
+     * @param context
+     */
+    public static void openDialog(Context context) {
+
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_loading);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.setCancelable(false);
+
+        if (context != null && dialog != null && !dialog.isShowing())
+            dialog.show();
+    }
+
+    /**
+     * Close Dialog
+     */
+    public static void closeDialog() {
+
+        if (dialog != null && dialog.isShowing())
+            dialog.dismiss();
+    }
+
+    /**
+     * Get 6 Digit After Point
+     *
+     * @param val
+     * @return
+     */
+    public static String getDecimalValue(double val) {
+        String value = new DecimalFormat("##.######").format(val);
+
+        return value;
+    }
+
+    /**
+     * Permission
+     *
+     * @param context
+     * @param permissions
+     * @return
+     */
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

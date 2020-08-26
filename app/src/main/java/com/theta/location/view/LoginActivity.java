@@ -1,10 +1,13 @@
 package com.theta.location.view;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.widget.EditText;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -32,20 +35,19 @@ import com.theta.location.viewmodel.LoginViewModel;
  */
 public class LoginActivity extends AppCompatActivity implements LoginAuthentication {
 
-    private EditText edtPassword;
+    private String[] PERMISSIONS = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+    private static final int Permission_Request_Code = 101;
+    private LoginViewModel loginViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         ActivityLoginBinding binding = DataBindingUtil.setContentView(getActivity(), R.layout.activity_login);
-        LoginViewModel loginViewModel = ViewModelProviders.of(getActivity()).get(LoginViewModel.class);
+        loginViewModel = ViewModelProviders.of(getActivity()).get(LoginViewModel.class);
         binding.setLoginModel(loginViewModel);
 
         loginViewModel.loginAuthentication = this;
-
-        edtPassword = findViewById(R.id.edtPassword);
-
     }
 
     /**
@@ -63,7 +65,7 @@ public class LoginActivity extends AppCompatActivity implements LoginAuthenticat
 
         PrefsUtil.with(getActivity()).write(Utils.IS_LOGIN, true);
         PrefsUtil.with(getActivity()).write(Utils.USER_NAME, "maitrey@thetatechnolabs.com");
-        
+
         Intent homeIntent = new Intent(getActivity(), HomeActivity.class);
         homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(homeIntent);

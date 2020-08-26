@@ -30,4 +30,15 @@
     <string name="txt_map">Map</string>
     <string name="txt_profile">Profile</string>
     <string name="logout">Logout</string>
+
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="exit_question">Are you sure to Logout?</string>
+    <string name="txt_lat">Lat:-</string>
+    <string name="txt_lng">Lng:-</string>
+    <string name="goto_setting">Goto Setting</string>
+    <string name="permission_title">Need Permission</string>
+    <string name="txt_location_permission">We need location permission.</string>
+    <string name="txt_permission_message">Tap to allow button and grant the location permission and view on map.</string>
+    <string name="allow">Allow</string>
 </resources>

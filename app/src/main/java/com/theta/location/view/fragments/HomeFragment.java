@@ -7,21 +7,23 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.theta.location.R;
 import com.theta.location.adapters.UserAdaptes;
 import com.theta.location.apiCall.GetDataService;
 import com.theta.location.apiCall.RetrofitClientInstance;
-import com.theta.location.models.DataList;
+import com.theta.location.databinding.FragmentHomeBinding;
 import com.theta.location.models.UserModel;
 import com.theta.location.utils.ConnectionCheck;
 import com.theta.location.utils.EndlessScrollListener;
 import com.theta.location.utils.LogFile;
+import com.theta.location.utils.Utils;
+import com.theta.location.viewmodel.UserViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,9 +50,9 @@ public class HomeFragment extends Fragment {
     private View view;
     private ConnectionCheck connectionCheck;
 
-    private RecyclerView rvList;
+    //    private RecyclerView rvList;
     private UserAdaptes adapter;
-    private List<DataList> userModelList = new ArrayList<>();
+    private List<UserViewModel> userModelList = new ArrayList<>();
     private LinearLayoutManager layoutManager;
 
     /*pagination vars start*/
@@ -60,17 +62,21 @@ public class HomeFragment extends Fragment {
     boolean isLastPage = false;
     /*pagination vars end*/
 
+    FragmentHomeBinding binding;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_home, null);
-        rvList = view.findViewById(R.id.rvList);
+
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
+        view = binding.getRoot();
+
         connectionCheck = new ConnectionCheck();
 
         adapter = new UserAdaptes(getActivity(), userModelList);
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvList.setLayoutManager(layoutManager);
-        rvList.setItemAnimator(new DefaultItemAnimator());
-        rvList.setAdapter(adapter);
+        binding.rvList.setLayoutManager(layoutManager);
+        binding.rvList.setItemAnimator(new DefaultItemAnimator());
+        binding.rvList.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
         page = 1;
@@ -78,7 +84,7 @@ public class HomeFragment extends Fragment {
             setData(true);
         }
 
-        rvList.addOnScrollListener(new EndlessScrollListener(layoutManager) {
+        binding.rvList.addOnScrollListener(new EndlessScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int p, int totalItemsCount) {
                 if (loading) {
@@ -99,12 +105,13 @@ public class HomeFragment extends Fragment {
      */
     private void setData(boolean clearFlag) {
 
+        Utils.openDialog(getActivity());
+
         if (clearFlag) {
             userModelList.clear();
         }
 
-
-        /*Create handle for the RetrofitInstance interface*/
+        //Create handle for the RetrofitInstance interface
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<UserModel> call = service.getAllUsers(page);
 
@@ -112,6 +119,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
 
+                Utils.closeDialog();
                 LogFile.i("URL :- " + call.request().url());
                 UserModel userModel = response.body();
                 if (userModelList != null && userModel.getData() != null && userModel.getData().size() > 0) {
@@ -123,7 +131,8 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<UserModel> call, Throwable t) {
-                Toast.makeText(getActivity(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                Utils.closeDialog();
+                Utils.showToast(getActivity(), "Something went wrong...Please try later!", false);
             }
         });
     }
@@ -135,7 +144,7 @@ public class HomeFragment extends Fragment {
             JSONObject jsonObject = new JSONObject(data);
             JSONArray jsonArray = jsonObject.getJSONArray("data");
             for (int i = 0; i < jsonArray.length(); i++) {
-                DataList dataList = new Gson().fromJson(jsonArray.getJSONObject(i).toString(), DataList.class);
+                UserViewModel dataList = new Gson().fromJson(jsonArray.getJSONObject(i).toString(), UserViewModel.class);
                 userModelList.add(dataList);
             }
 
